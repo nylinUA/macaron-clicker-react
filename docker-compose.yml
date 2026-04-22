@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    #volumes:
+    #  - ./backend:/app
+    #  - /app/node_modules
+    ports:
+      - "3000:3000"
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/src
+          target: /app/src
+
+        - action: rebuild
+          path: ./backend/package.json
+          target: /app
+  macaron-front:
+    build:
+      context: ./macaron-front
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    #volumes:
+    #  - ./macaron-front:app
+    #  - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./macaron-front
+          target: /app
+
+        - action: rebuild
+          path: ./macaron-front/package.json
